@@ -1,6 +1,5 @@
 set nocompatible              " required
 filetype off                  " required
-
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -14,27 +13,27 @@ Plugin 'racer-rust/vim-racer'
 Plugin 'https://github.com/mattn/webapi-vim.git'
 Plugin 'https://github.com/gabrielelana/vim-markdown.git'
 Plugin 'JamshedVesuna/vim-markdown-preview'
+Plugin 'jewes/Conque-Shell'
+Plugin 'rust-lang/rust.vim'
+Plugin 'jlanzarotta/bufexplorer'
 
 
 " add all your plugins here (note older versions of Vundle
 " used Bundle instead of Plugin)
 " Conque is used to run shell within vim 
-Plugin 'jewes/Conque-Shell'
 set hidden "hides buffer instead of closing them
+let g:racer_cmd="/home/bidit/.cargo/bin/racer"
 let g:racer_experimental_completer = 1
+
 let g:rustfmt_command = "cargo fmt -- " 
 let g:rustfmt_autosave = 1
 "disable autocompletion in python 
-let g:pymode_rope = 0
-
-
-
+let g:pymode_rope = 1
 
 au FileType rust nmap gd <Plug>(rust-def)
 au FileType rust nmap gs <Plug>(rust-def-split)
 au FileType rust nmap gx <Plug>(rust-def-vertical)
 au FileType rust nmap <leader>gd <Plug>(rust-doc)
-
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -52,9 +51,6 @@ filetype plugin indent on
 set pastetoggle=<F2>
 "set mouse usable in rust, useful for scrolling and nothing else
 set mouse=a
-Plugin 'rust-lang/rust.vim'
-Plugin 'jlanzarotta/bufexplorer'
-
 
 "change the mapleader from \ to , 
 let mapleader=","
@@ -88,7 +84,37 @@ map <C-k> <C-w>k
 
 "adding support for html autocomplete
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+set omnifunc=syntaxcomplete#Complete
 
+colorscheme darkblue
 
+" bindings for nerdtree
+autocmd VimEnter * NERDTree
+autocmd BufEnter * NERDTreeMirror
 
+"CTRL-t to toggle tree view with CTRL-t
+nmap <silent> <C-t> :NERDTreeToggle<CR>
+"Set F2 to put the cursor to the nerdtree
+nmap <silent> <F2> :NERDTreeFind<CR>
+
+call vundle#begin()
+Plugin 'scrooloose/nerdtree'
+call vundle#end()
+"set active focus to editing file content in NerdTree
+autocmd VimEnter * wincmd w
+
+"auto execute file in python 
+autocmd FileType python map <buffer> <F9> :w<CR>:exec '!python3' shellescape(@%, 1)<CR>
+autocmd FileType javascript map <buffer> <F9> :w<CR>:exec '!node' shellescape(@%, 1)<CR>
+
+autocmd FileType html  map <buffer> <F9> :w<CR>:exec '!firefox' shellescape(@%, 1)<CR>
+
+"press enter to move line downward in normal mode
+nmap <CR> o<Esc>k
+nmap <S-CR> o
+
+"press space to move text
+nmap <space> i<space><Esc>
+"prevent nerd tree from starting on first run of vim 
+let g:nerdtree_tabs_open_on_gui_startup = 0
 
